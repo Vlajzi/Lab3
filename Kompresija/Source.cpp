@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include "LZW.h"
-
+#include "Shannon-Fano.h"
 using namespace std;
 
 static const char alphanumb[] = "0123456789 qwertyuiopasdfghjklzxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM .,. \n";
@@ -38,7 +38,8 @@ int main(int argc, char* argv[])
 	LZW test;
 	char* s = (char*)test.Compres("Eng100.txt");
 	test.Decopress("Eng100.LZW");
-	
+	ShannonFano sf;
+	sf.Copress("Eng100.txt");
 }
 
 void GenFile(int count)
