@@ -9,9 +9,14 @@ using namespace std;
 static const char alphanumb[] = "0123456789 qwertyuiopasdfghjklzxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM .,. \n";
 
 void GenFile(int count);
+void Probe();
 
 int main(int argc, char* argv[])
 {
+
+	Probe();
+	
+
 	/*int help = 100;
 	for (int i = 0; i < 5;i++)
 	{
@@ -36,10 +41,10 @@ int main(int argc, char* argv[])
 	bitset<12> provera2 = ((proba1 & mask1) >> 4).to_ulong();
 	unsigned long t3 = provera1.to_ulong();*/
 	LZW test;
-	char* s = (char*)test.Compres("Eng100.txt");
-	test.Decopress("Eng100.LZW");
-	ShannonFano sf;
-	sf.Copress("Eng100.txt");
+	char* s = (char*)test.Compres("Test.txt");
+	test.Decopress("Test.LZW");
+	/*ShannonFano sf;
+	sf.Copress("Eng100.txt");*/
 }
 
 void GenFile(int count)
@@ -70,4 +75,14 @@ void GenFile(int count)
 		cout << ex.what();
 	}
 	izlaz.close();
+}
+
+void Probe()
+{
+	bitset<12> a("110010010010");
+
+	char c = a.to_ulong();
+
+	bitset<12> b = c;
+	bitset<12> e = (unsigned char)c;
 }

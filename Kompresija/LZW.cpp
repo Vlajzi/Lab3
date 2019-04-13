@@ -51,19 +51,25 @@ void* LZW::Compres(string file)
 
 
 	for (int i = 0; i <size; i++) {
+		if (i == 190)
+		{
+			//cout << NULL;
+			//auto a1 = tabela.find("or ");
+		}
 		if (i != size - 1)
 			c += stream[i + 1];
 		if (tabela.find(p + c) != tabela.end()) 
 		{
-			p = p + c;//ako prelazi 12 bita
+			p = p + c;
 		}
 		else 
 		{
-			/*cout << p << "\t" << tabela[p].x << "\t\t"
+			/*cout << p << "\t" << tabela[p].x.to_ulong() << "\t"
 				<< p + c << "\t" << code << endl;*/
 			izlazniKod.push_back(tabela[p]);
 			if (code <= 4095)
 			{
+
 				tabela[p + c].x = code;
 				code++;
 			}
@@ -106,9 +112,9 @@ void* LZW::Compres(string file)
 		}
 		else
 		{
-			unsigned long test = ((izlazniKod[i - 1].x) >> 8).to_ulong() + ((izlazniKod[i].x & mask11) << 4).to_ulong();
-			bitset<12> provera = ((izlazniKod[i - 1].x) >> 8).to_ulong() + ((izlazniKod[i].x & mask11) << 4).to_ulong();
-			outStream[pom++] = (char)((izlazniKod[i - 1].x) >> 8).to_ulong() + ((izlazniKod[i].x & mask11) << 4).to_ulong();
+			unsigned long test = ((izlazniKod[i - 1].x) >> 8).to_ulong() | ((izlazniKod[i].x & mask11) << 4).to_ulong();
+			bitset<12> provera = ((izlazniKod[i - 1].x) >> 8).to_ulong() | ((izlazniKod[i].x & mask11) << 4).to_ulong();
+			outStream[pom++] = (char)((izlazniKod[i - 1].x) >> 8).to_ulong() | ((izlazniKod[i].x & mask11) << 4).to_ulong();
 			//bitset<12> uns = (unsigned char)outStream[pom - 1];
 			bitset<12> provera1 = ((izlazniKod[i].x & mask1) >> 4).to_ulong();
 			unsigned long test1 = provera1.to_ulong();
@@ -121,7 +127,7 @@ void* LZW::Compres(string file)
 	}
 	if (!ind)
 	{
-		outStream[pom++] = ((izlazniKod[i - 1].x) >> 8).to_ulong();
+		outStream[pom++] = (char)((izlazniKod[i - 1].x) >> 8).to_ulong();
 	}
 	outStream[pom] = '\0';
 
@@ -172,16 +178,18 @@ void* LZW::Decopress(string file)
 
 	for (i = 0; i <  pom; i++)
 	{
+
 		if (ind == 0)
 		{
-			elm1.x = stream[i];
+			elm1.x = (unsigned char)stream[i];
 			ind = 1;
 		}
 		else if (ind == 1)
 		{
 			elmPom.x &= elmPom.x;
 			elmPom.x = (unsigned char)stream[i];
-			elm1.x |= (elmPom.x & mask2);
+			bitset<12> test = (elmPom.x & mask2);
+			elm1.x |= ((elmPom.x & mask2)  << 8);
 			ulazniKod.push_back(elm1);
 			elm1.x ^= elm1.x;
 			elm2.x = (elmPom.x >> 4);
@@ -196,6 +204,10 @@ void* LZW::Decopress(string file)
 			elm2.x ^= elm2.x;
 			ind = 0;
 		}
+		//if (ulazniKod.size() == 154)
+		//{
+		//	i = i;
+		//}
 
 	}
 
@@ -204,37 +216,67 @@ void* LZW::Decopress(string file)
 	stream = (char*)malloc(sizeof(char));
 	unordered_map<int, string> table;
 	
-	for (int i = 0; i <= 255; i++) {
+	for (int i = 0; i <= 255; i++) 
+	{
 		string ch = "";
 		ch += char(i);
 		/*Kod k;
 		k.x = i;*/
 		table[i] = ch;
 	}
-	int old = ulazniKod[0].x.to_ulong(), n;
+
+	unsigned int old = ulazniKod[0].x.to_ulong(), n;
 	string s = table[old];
 	string c = "";
-	c += s[0];
 	cout << s;
+	c = s;
 	int count = 256;
-	for (int i = 0; i < ulazniKod.size() - 1; i++) {
-		n = ulazniKod[i + 1].x.to_ulong();
-		if (table.find(n) == table.end()) {
-			s = table[old];
-			s = s + c;
+	for (int i = 1; i < ulazniKod.size(); i++)
+	{
+		if (count == 408)
+		{
+			i = i;
 		}
-		else {
-			s = table[n];
+		old = ulazniKod[i].x.to_ulong();
+
+		if (table.find(old) != table.end())
+		{
+			c = table[old];
+			cout << c;
+			
+				table[count] = s + c[0];
+				count++;
+			
 		}
-		cout << s;
-		c = "";
-		c += s[0];
-		/*Kod k;
-		k.x = count;*/
-		table[count] = table[old] + c;
-		count++;
-		old = n;
+		else
+		{
+			if (count > 4095 + 1)
+			{
+				cout << endl << "---ERROR---" << endl;
+			}
+
+
+				c = s + s[0];
+				cout << c;
+				table[count] == c;
+				count++;
+			
+		}
+		s = c;
 	}
 	cout << endl;
+
+	/*for (int i = 0; i < table.size(); i++)
+	{
+		cout << i << "\t" << table[i] << endl;
+	}*/
+	//cout << endl << endl << "---New---" << endl;
+	//unordered_map<string, Kod>::iterator p;
+	/*for (p = tabela.begin(); p != tabela.end(); p++)
+	{
+		cout << p->second.x.to_ulong() << "\t" << p->first << endl;
+	}*/
+
+
 		return nullptr;
 }

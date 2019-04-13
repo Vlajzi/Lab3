@@ -56,7 +56,7 @@ void ShannonFano::Copress(string file)
 
 	
 
-	shannon(0, i,1,sansa);
+	shannon(0, i,1,sansa,false);//prover false true?
 
 
 	cout << "end";
