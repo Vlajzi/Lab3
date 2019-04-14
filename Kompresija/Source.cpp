@@ -40,11 +40,13 @@ int main(int argc, char* argv[])
 	
 	bitset<12> provera2 = ((proba1 & mask1) >> 4).to_ulong();
 	unsigned long t3 = provera1.to_ulong();*/
-	LZW test;
+	/*LZW test;
 	char* s = (char*)test.Compres("Test.txt");
-	test.Decopress("Test.LZW");
-	/*ShannonFano sf;
-	sf.Copress("Eng100.txt");*/
+	test.Decopress("Test.LZW");*/
+	ShannonFano sf;
+	sf.Copress("File-1000.txt");
+	sf.Decomress();
+	cout << "end";
 }
 
 void GenFile(int count)
