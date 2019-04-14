@@ -49,6 +49,7 @@ void* LZW::Compres(string file)
 	int code = 256;
 	vector<Kod> izlazniKod;
 
+	cout << "w\t" << "w kod\t" << "w+c\t" << "w+c kod" << endl;
 
 	for (int i = 0; i <size; i++) {
 		if (i == 190)
@@ -64,8 +65,11 @@ void* LZW::Compres(string file)
 		}
 		else 
 		{
-			/*cout << p << "\t" << tabela[p].x.to_ulong() << "\t"
-				<< p + c << "\t" << code << endl;*/
+			if (size < 10000)
+			{
+				cout << p << "\t" << tabela[p].x.to_ulong() << "\t"
+					<< p + c << "\t" << code << endl;
+			}
 			izlazniKod.push_back(tabela[p]);
 			if (code <= 4095)
 			{
@@ -77,7 +81,10 @@ void* LZW::Compres(string file)
 		}
 		c = "";
 	}
-	//cout << p << "\t" << tabela[p].x << endl;
+	/*if (size < 1000)
+	{
+		cout << p << "\t" << tabela[p].x << endl;
+	}*/
 	izlazniKod.push_back(tabela[p]);
 	//return &izlazniKod;
 
@@ -212,10 +219,10 @@ void* LZW::Decopress(string file)
 	}
 
 
-	free(stream);
-	stream = (char*)malloc(sizeof(char));
+	/*free(stream);
+	stream = (char*)malloc(sizeof(char));*/
 	unordered_map<int, string> table;
-	
+	string iz=  "";
 	for (int i = 0; i <= 255; i++) 
 	{
 		string ch = "";
@@ -230,20 +237,18 @@ void* LZW::Decopress(string file)
 	string c = "";
 	cout << s;
 	c = s;
+	pom = 0;
 	int count = 256;
 	for (int i = 1; i < ulazniKod.size(); i++)
 	{
-		if (count == 408)
-		{
-			i = i;
-		}
+
 		old = ulazniKod[i].x.to_ulong();
 
 		if (table.find(old) != table.end())
 		{
 			c = table[old];
-			cout << c;
-			
+			//cout << c;
+			iz += c;
 				table[count] = s + c[0];
 				count++;
 			
@@ -276,7 +281,11 @@ void* LZW::Decopress(string file)
 	{
 		cout << p->second.x.to_ulong() << "\t" << p->first << endl;
 	}*/
-
-
+	pom = file.find_last_of('.');
+	file.replace(pom, 4, ".txt");
+	string iz_file = "";
+	iz_file += "De-LZW-" + file;
+	izlaz.open(iz_file, ios::binary);
+	izlaz << iz;
 		return nullptr;
 }

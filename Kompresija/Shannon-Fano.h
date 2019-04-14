@@ -29,9 +29,12 @@ public:
 		return (a.count > b.count);
 	}
 	void shannon(int l, int h,double total, vector<Nod> &p, bool poz);
-	void Decomress();
+	void Decomress(string file);
+	void WriteTable();
 private:
 	
 	vector<nod> sansa;
 	void ResetSansa();
+	void shannonv2(int l, int h, vector<Nod>& p);
+
 };

@@ -14,7 +14,7 @@ void Probe();
 int main(int argc, char* argv[])
 {
 
-	Probe();
+	//Probe();
 	
 
 	/*int help = 100;
@@ -40,13 +40,22 @@ int main(int argc, char* argv[])
 	
 	bitset<12> provera2 = ((proba1 & mask1) >> 4).to_ulong();
 	unsigned long t3 = provera1.to_ulong();*/
-	/*LZW test;
+
+
+
+
+
+	cout << "LZW" << endl;
+	LZW test;
 	char* s = (char*)test.Compres("Test.txt");
-	test.Decopress("Test.LZW");*/
+	test.Decopress("Test.LZW");
+	cout << endl << "Shannon-Fano" << endl;
 	ShannonFano sf;
-	sf.Copress("File-1000.txt");
-	sf.Decomress();
+	sf.Copress("Test.txt");
+	sf.Decomress("Test.SF");
 	cout << "end";
+
+
 }
 
 void GenFile(int count)
@@ -81,10 +90,16 @@ void GenFile(int count)
 
 void Probe()
 {
-	bitset<12> a("110010010010");
+	Nod a;
+	a.kod.push_back('1' - 48);
+	a.kod.push_back('0' - 48);
+	Nod b;
+	b.kod.push_back(true);
+	b.kod.push_back(false);
 
-	char c = a.to_ulong();
+	if (a.kod == b.kod)
+	{
+		cout << "Jeste";
+	}
 
-	bitset<12> b = c;
-	bitset<12> e = (unsigned char)c;
 }
