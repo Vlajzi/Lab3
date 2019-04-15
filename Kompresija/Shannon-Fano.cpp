@@ -114,8 +114,17 @@ void ShannonFano::Copress(string file)
 	izlaz.write((char*)tabela, sizeof(double) * 256);
 	izlaz.write(stream, (pozition));
 	izlaz.close();
-	WriteTable();
+	if (size < 1000)
+	{
+		WriteTable();
+	}
 	//cout << stream;
+
+	if (size < 1000)
+	{
+		cout << "Rezultat kodiranje je:" << endl;
+		cout.write(stream, pozition);
+	}
 
 }
 
@@ -271,6 +280,7 @@ void ShannonFano::Decomress(string file)
 	izlaz.open(iz_file, ios::binary);
 	izlaz.write(rez, numbOfC + 1);
 	izlaz.close();
+
 }
 
 void ShannonFano::WriteTable()
@@ -282,7 +292,7 @@ void ShannonFano::WriteTable()
 	cout << "Simbol\t" << "Procenat\t\t" << "Kod" << endl;
 	while (sansa[i].count != 0 && i != 256)
 	{
-		cout << sansa[i].symbol << "\t" << sansa[i].count << "\t";
+		cout << sansa[i].symbol << "\t" << sansa[i].count << "\t\t";
 		for (p = sansa[i].kod.begin(); p != sansa[i].kod.end(); p++)
 		{
 			cout << *p;
@@ -305,6 +315,8 @@ void ShannonFano::ResetSansa()
 		sansa.push_back(tmp);
 	}
 }
+
+
 void ShannonFano::shannonv2(int l, int h, vector<Nod>& p)
 {
 	double pack1 = 0, pack2 = 0, diff1 = 0, diff2 = 0;

@@ -48,8 +48,10 @@ void* LZW::Compres(string file)
 	p += stream[0];
 	int code = 256;
 	vector<Kod> izlazniKod;
-
-	cout << "w\t" << "w kod\t" << "w+c\t" << "w+c kod" << endl;
+	if (size < 1000)
+	{
+		cout << "w\t" << "w kod\t" << "w+c\t" << "w+c kod" << endl;
+	}
 
 	for (int i = 0; i <size; i++) {
 		if (i == 190)
@@ -65,7 +67,7 @@ void* LZW::Compres(string file)
 		}
 		else 
 		{
-			if (size < 10000)
+			if (size < 1000)
 			{
 				cout << p << "\t" << tabela[p].x.to_ulong() << "\t"
 					<< p + c << "\t" << code << endl;
@@ -142,7 +144,12 @@ void* LZW::Compres(string file)
 	izlaz.close();
 #pragma endregion
 
-
+	if (size < 1000)
+	{
+		cout << "Kodni Izlaz Je:" << endl;
+		cout.write(outStream, pom);
+		cout << endl;
+	}
 	return stream;//test
 }
 

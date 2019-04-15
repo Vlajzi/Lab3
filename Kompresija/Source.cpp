@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
 
 
-	cout << "LZW" << endl;
+	/*cout << "LZW" << endl;
 	LZW test;
 	char* s = (char*)test.Compres("Test.txt");
 	test.Decopress("Test.LZW");
@@ -53,7 +53,30 @@ int main(int argc, char* argv[])
 	ShannonFano sf;
 	sf.Copress("Test.txt");
 	sf.Decomress("Test.SF");
-	cout << "end";
+	cout << "end";*/
+
+	
+
+	int help = 100;
+	string pom[] = { "File-","FileEng-","FileSrb-" };
+
+	for (int j = 0; j < 3; j++)//treba 3
+	{
+		help = 100;
+		for (int i = 0; i < 5; i++)
+		{
+			LZW alg1;
+			ShannonFano alg2;
+			string st = pom[j];
+			st += to_string(help);
+			st += ".txt";
+
+			alg1.Compres(st);
+			alg2.Copress(st);
+
+			help *= 10;
+		}
+	}
 
 
 }
